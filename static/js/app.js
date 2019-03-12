@@ -10,15 +10,15 @@ var tbody = d3.select("tbody");
 console.log(tableData);
 
 // Use d3 to update each cell's text with UFO sighting values (date/time, city, state, country, shape, duration, comments)
-tableData.forEach(function(ufoReport) {
+tableData.forEach(function(ufoSighting) {
   // Step 1: Loop Through `data` and console.log each UFO sighting report object
-  console.log(ufoReport);
+  console.log(ufoSighting);
   
   // Step 2:  Use d3 to append one table row `tr` for each UFO sighting report object
   var row = tbody.append("tr");
  
   // Step 3:  Use `Object.entries` to console.log each UFO sighting report value
-  Object.entries(ufoReport).forEach(function([key, value]) {
+  Object.entries(ufoSighting).forEach(function([key, value]) {
     console.log(key, value);
 
     // Step 4: Use d3 to append 1 cell per UFO sighting report value 
@@ -40,8 +40,8 @@ tableData.forEach(function(ufoReport) {
 
       // Prevent the page from refreshing
       d3.event.preventDefault();
-      // Remove existing table do filtered data shows at the top
-      d3.selectAll("td").remove();
+      // Remove existing table so filtered data shows at the top
+      // d3.selectAll("td").remove();
 
       // Select the input element and get the raw HTML node
       var inputElementdatetime = d3.select("#datetime");
@@ -50,7 +50,7 @@ tableData.forEach(function(ufoReport) {
       var inputElementcountry = d3.select("#country");
       var inputElementshape = d3.select("#shape");
 
-      // Get the value property of the input element
+      // Get the value property of the input element and store in new variable
       var inputValuedatetime = inputElementdatetime.property("value");
       var inputValuecity = inputElementcity.property("value");
       var inputValuestate = inputElementstate.property("value");
@@ -63,11 +63,10 @@ tableData.forEach(function(ufoReport) {
       console.log(inputValuecountry);
       console.log(inputValueshape);
 
-      // Filter the data for date/time
-      var filteredData = tableData.filter(ufoReport => ufoReport.datetime === inputValuedatetime);
-
         // Function to rebuild table using filtered data
         function filter(filteredData) {
+          // Remove existing table so filtered data shows at the top
+          d3.selectAll("td").remove();
           console.log("Search Results:", filteredData);
           // Build the new table
           // Use D3 to select the table body
@@ -81,23 +80,46 @@ tableData.forEach(function(ufoReport) {
               });
             });    
           }
-        filter(filteredData);  
+        
+        // Filter the data for date/time
+        if (inputValuedatetime) {
+
+        console.log(inputValuedatetime);
+
+        var filteredData = tableData.filter(ufoSighting => ufoSighting.datetime === inputValuedatetime);
+        filter(filteredData);
+        console.log(filteredData); 
+        } 
 
         // Filter data for city
-        var filteredData = tableData.filter(ufoReport => ufoReport.city === inputValuecity);
+        if (inputValuecity) {
+        console.log(inputValuecity);
+        var filteredData = filteredData.filter(ufoSighting => ufoSighting.city === inputValuecity);
         filter(filteredData);
+        console.log(filteredData);
+        }
 
         // Filter data for state
-        var filteredData = tableData.filter(ufoReport => ufoReport.state === inputValuestate);
+        if (inputValuestate) {
+        console.log(inputValuecity);
+        var filteredData = filteredData.filter(ufoSighting => ufoSighting.state === inputValuestate);
         filter(filteredData);
+        console.log(filteredData);
+        }
 
         // Filter data for country
-        var filteredData = tableData.filter(ufoReport => ufoReport.country === inputValuecountry);
+        if (inputValuedatecountry) {
+        var filteredData = filteredData.filter(ufoSighting => ufoSighting.country === inputValuecountry);
         filter(filteredData);
+        console.log(filteredData);
+        }
 
         // Filter data for shape
-        var filteredData = tableData.filter(ufoReport => ufoReport.shape === inputValueshape);
+        if (inputValueshape) {
+        var filteredData = filteredData.filter(ufoSighting => ufoSighting.shape === inputValueshape);
         filter(filteredData);
+        console.log(filteredData);
+        }
     }); 
 
     // BONUS: Refactor to use Arrow Functions!
